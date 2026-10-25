@@ -76,6 +76,7 @@ def page(body, **context):
     return render_template_string(PAGE, body=render_template_string(body, **context))
 
 @app.route("/")
+@login_required
 def home():
     q = request.args.get("q", "").strip()
     with connect() as con:
