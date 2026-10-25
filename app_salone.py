@@ -11,7 +11,53 @@ APP_DIR = Path(__file__).resolve().parent
 DB_PATH = APP_DIR / "clienti_salone.db"
 app = Flask(__name__)
 app.secret_key = "fabio-salone-local"
+from functools import wraps
+import hmac
+from flask import session
 
+SALONE_USER = os.environ.get("SALONE_USER", "")
+SALONE_PASSWORD = os.environ.get("SALONE_PASSWORD", "")
+
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not SALONE_USER or not SALONE_PASSWORD or not app.secret_key:
+            return "Configurazione accesso incompleta su Render.", 503
+        if not session.get("authenticated"):
+            return redirect(url_for("login"))
+        return view(*args, **kwargs)
+    return wrapped_view
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if not SALONE_USER or not SALONE_PASSWORD or not app.secret_key:
+        return "Configurazione accesso incompleta su Render.", 503
+
+    if request.method == "POST":
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
+
+        if (hmac.compare_digest(username, SALONE_USER)
+                and hmac.compare_digest(password, SALONE_PASSWORD)):
+            session["authenticated"] = True
+            return redirect(url_for("home"))
+
+        errore = "<p>Nome utente o password errati.</p>"
+    else:
+        errore = ""
+
+    return render_template_string(errore + """
+        <h2>Accesso al gestionale</h2>
+        <form method="post">
+            <label>Nome utente</label><br>
+            <input name="username" required><br><br>
+            <label>Password</label><br>
+            <input name="password" type="password" required><br><br>
+            <button type="submit">Entra</button>
+        </form>
+    """)
 def connect():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
