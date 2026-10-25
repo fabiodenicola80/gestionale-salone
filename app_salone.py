@@ -1,19 +1,19 @@
-from flask import Flask, request, redirect, url_for, render_template_string, send_file, flash
+from flask import Flask, request, redirect, url_for, render_template_string, send_file, flash, session
 import sqlite3
+import os
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
+from functools import wraps
+import hmac
 
 APP_DIR = Path(__file__).resolve().parent
 DB_PATH = APP_DIR / "clienti_salone.db"
 app = Flask(__name__)
-app.secret_key = "fabio-salone-local"
-from functools import wraps
-import hmac
-from flask import session
+app.secret_key = os.environ.get("SECRET_KEY", "")
 
 SALONE_USER = os.environ.get("SALONE_USER", "")
 SALONE_PASSWORD = os.environ.get("SALONE_PASSWORD", "")
