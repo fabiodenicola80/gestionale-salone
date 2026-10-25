@@ -1,0 +1,33 @@
+GESTIONALE CLIENTI FABIO DE NICOLA — VERSIONE MOBILE
+
+Questa versione parte da un database NUOVO e vuoto. Non importa i vecchi clienti o il vecchio Excel.
+
+COSA FA
+- Gestione clienti e telefono
+- Storico dei servizi
+- Formule colore, marca, ossidante e note
+- Prezzi e totale incassi registrati
+- Esportazione in un vero file Excel (.xlsx), con due fogli: Clienti e Storico servizi
+
+IMPORTANTE
+L'app è una pagina web ottimizzata per il cellulare, ma inizialmente deve essere avviata su un computer Windows. Il cellulare e il computer devono essere collegati alla stessa rete Wi-Fi. Per usarla anche quando il computer è spento o fuori casa, servirà pubblicarla su un servizio online.
+
+PRIMO AVVIO SU WINDOWS
+1. Installa Python 3 se non è già installato: https://www.python.org/downloads/
+   Durante l'installazione seleziona "Add Python to PATH".
+2. Estrai tutto lo ZIP in una cartella, per esempio sul Desktop.
+3. Apri la cartella estratta.
+4. Clicca sulla barra degli indirizzi della cartella, scrivi cmd e premi Invio.
+5. Nella finestra nera esegui questi due comandi, uno alla volta:
+
+   py -m pip install -r requirements.txt
+   py app_salone.py
+
+6. Sul computer apri nel browser: http://127.0.0.1:5000
+7. Per aprire la stessa app sul cellulare, bisogna trovare l'indirizzo IP locale del computer e inserirlo nel browser del cellulare come:
+   http://INDIRIZZO-IP-DEL-COMPUTER:5000
+
+DATI E BACKUP
+I nuovi dati vengono salvati nel file clienti_salone.db nella stessa cartella dell'app.
+Premi "Esporta Excel" per scaricare un file .xlsx sul dispositivo da cui stai usando l'app.
+Conserva una copia del file clienti_salone.db e degli Excel esportati.
